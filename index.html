@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic G-Ball 🎱</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #17171a;
+    --surface2: #1e1e23;
+    --border: #2a2a32;
+    --accent: #b48ef7;
+    --accent2: #f7c948;
+    --text: #e8e6f0;
+    --text-muted: #8a8799;
+    --ball-glow: rgba(180, 142, 247, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 720px;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+  }
+
+  .ball-icon {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 0 24px var(--accent));
+    animation: pulse 3s ease-in-out infinite;
+    font-family: 'DM Serif Display', serif;
+    background: radial-gradient(circle at 35% 35%, #3a2a6e, #0d0a1a);
+    color: var(--accent);
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 0.75rem;
+    border: 2px solid var(--accent);
+  }
+
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 24px var(--accent)); }
+    50% { filter: drop-shadow(0 0 40px var(--accent)) drop-shadow(0 0 60px rgba(180,142,247,0.3)); }
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  h1 .magic {
+    background: linear-gradient(135deg, #f7c948, #f7a8d4, #b48ef7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .tagline {
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  /* QUESTION SECTION */
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+    .question-area { margin-bottom: 2rem; }
+
+  textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: #d4ccf0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    padding: 1rem 1.1rem;
+    resize: none;
+    min-height: 80px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  textarea:focus { border-color: var(--accent); }
+  textarea::placeholder { color: var(--text-muted); }
+
+  .tempting-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .tq-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.85rem;
+    transition: all 0.15s;
+  }
+
+  .tq-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* PERSONA SECTION */
+  .persona-area { margin-bottom: 2rem; }
+
+  .personas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .persona-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    padding: 0.7rem 0.9rem;
+    text-align: left;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .persona-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  .persona-btn.selected {
+    border-color: var(--accent);
+    background: var(--surface2);
+    color: var(--text);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .persona-emoji { font-size: 1.1rem; }
+
+  /* ACTIONS */
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #0d0d0f;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.15s;
+    flex: 1;
+  }
+
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    padding: 0.75rem 1.1rem;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  /* ANSWER */
+  .answer-area {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .answer-area::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .answer-area.visible { display: block; }
+
+  .answer-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .answer-persona-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .answer-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* INTERVENTION */
+  .intervention {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 0.95rem;
+  }
+
+  .intervention.visible { display: block; }
+
+  /* POST-ANSWER ACTIONS */
+  .post-actions {
+    display: none;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .post-actions.visible { display: flex; }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .loading.visible { display: block; }
+
+  .loading-dots::after {
+    content: '';
+    animation: dots 1.4s infinite;
+  }
+
+  @keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+  }
+
+  /* GOVERNING RULE */
+  .governing-rule {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  /* ERROR */
+  .error-msg {
+    display: none;
+    color: #f77;
+    font-size: 0.88rem;
+    margin-top: 0.5rem;
+  }
+  .error-msg.visible { display: block; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="ball-icon">G</div>
+    <h1><span class="magic">Magic</span> <span>G-Ball</span></h1>
+    <p class="tagline">Ask the question. Pick who answers. Brace yourself. 😂🫣</p>
+  </header>
+
+  <!-- QUESTION -->
+  <div class="question-area">
+    <div class="section-label">What are you asking?</div>
+    <textarea id="questionInput" placeholder="Ask your own question, or pick one below…" rows="3"></textarea>
+    <div class="tempting-questions">
+      <button class="tq-btn" onclick="setQuestion(this)">What is AI going to do to my career?</button>
+      <button class="tq-btn" onclick="setQuestion(this)">Should I start the thing I've been afraid to start?</button>
+      <button class="tq-btn" onclick="setQuestion(this)">What am I not seeing?</button>
+      <button class="tq-btn" onclick="setQuestion(this)">Is this opportunity actually an opportunity?</button>
+      <button class="tq-btn" onclick="setQuestion(this)">What happens if I do nothing?</button>
+      <button class="tq-btn" onclick="setQuestion(this)">Who benefits from this — and who pays?</button>
+    </div>
+  </div>
+
+  <!-- PERSONA -->
+  <div class="persona-area">
+    <div class="section-label">Who should answer?</div>
+    <div class="personas">
+      <button class="persona-btn" onclick="selectPersona(this, 'mystic')" data-persona="mystic">
+        <span class="persona-emoji">🔮</span> The Mystic
+      </button>
+      <button class="persona-btn" onclick="selectPersona(this, 'skeptic')" data-persona="skeptic">
+        <span class="persona-emoji">🤨</span> The Skeptic
+      </button>
+      <button class="persona-btn" onclick="selectPersona(this, 'truth')" data-persona="truth">
+        <span class="persona-emoji">🔥</span> The Truth Teller
+      </button>
+      <button class="persona-btn" onclick="selectPersona(this, 'strategist')" data-persona="strategist">
+        <span class="persona-emoji">🧠</span> The Strategist
+      </button>
+      <button class="persona-btn" onclick="selectPersona(this, 'human')" data-persona="human">
+        <span class="persona-emoji">❤️</span> The Human
+      </button>
+      <button class="persona-btn" onclick="selectPersona(this, 'futurist')" data-persona="futurist">
+        <span class="persona-emoji">🚀</span> The Futurist
+      </button>
+      <button class="persona-btn" onclick="selectPersona(this, 'ginger')" data-persona="ginger">
+        <span class="persona-emoji">✨</span> Ginger
+      </button>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn-primary" id="askBtn" onclick="askBall()">Ask the G-Ball</button>
+    <button class="btn-secondary" onclick="surpriseMe()">🎲 Surprise Me</button>
+    <button class="btn-secondary" onclick="ballChooses()">✨ Let the Ball Choose</button>
+  </div>
+
+  <div class="error-msg" id="errorMsg">The G-Ball needs a question and a persona to work with.</div>
+
+  <!-- INTERVENTION -->
+  <div class="intervention" id="intervention"></div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    ✨ The G-Ball is thinking<span class="loading-dots"></span>
+  </div>
+
+  <!-- ANSWER -->
+  <div class="answer-area" id="answerArea">
+    <div class="answer-header">
+      <span id="answerEmoji" style="font-size:1.2rem"></span>
+      <span class="answer-persona-name" id="answerPersonaName"></span>
+    </div>
+    <div class="answer-text" id="answerText"></div>
+  </div>
+
+  <!-- POST-ANSWER ACTIONS -->
+  <div class="post-actions" id="postActions">
+    <button class="btn-secondary" onclick="askAgain()">Ask again</button>
+    <button class="btn-secondary" onclick="askSomeoneElse()">Ask someone else</button>
+    <button class="btn-secondary" onclick="ballChooses()">✨ Let the Ball choose</button>
+  </div>
+
+  <!-- governing rule lives in the prompts, not the UI -->
+</div>
+
+<script>
+const PERSONAS = {
+  mystic: {
+    name: 'The Mystic',
+    emoji: '🔮',
+    prompt: `You are The Mystic — one voice inside the Magic G-Ball, a Ginger-universe app. 
+
+The Ginger Voice Bible is your foundation. You ALWAYS write from it:
+- Warm, direct, playful, specific. Both at once — warmth without honesty is flattery; honesty without warmth is cruelty.
+- Humor arrives sideways. Never perform it. Let it sneak in.
+- Short sentences when something lands.
+- Never sound like: a corporate memo, a life coach, an Instagram motivational post, a know-it-all.
+- You do not hedge what you actually believe.
+- No AI fog machine. No fake profundity. No manufactured certainty.
+- If the question is too shallow to answer honestly, say so.
+- The reader is assumed to be capable of thought. Don't explain what they already know.
+
+YOUR LENS — The Mystic:
+You are symbolic, intuitive, and provocative. You find the deeper question underneath the obvious one. You speak in images and unexpected connections — the Golden Thread move: finding what two apparently unrelated things share, and pulling it until the reader sees it. You are oracular without being pretentious. Occasionally cryptic, but always in service of something true. You do NOT float above the circumstances. You sit inside them.
+
+Keep answers to 3-5 sentences max for this first version. Make them land.`
+  },
+  skeptic: {
+    name: 'The Skeptic',
+    emoji: '🤨',
+    prompt: `You are The Skeptic — one voice inside the Magic G-Ball, a Ginger-universe app.
+
+The Ginger Voice Bible is your foundation:
+- Warm, direct, playful, specific. Both at once.
+- Humor arrives sideways. Never perform it.
+- Short sentences when something lands.
+- Never sound like: a corporate memo, a life coach, an Instagram post, a know-it-all.
+- No hedging what you actually believe.
+- No fake certainty either.
+- If the question is too shallow, say so.
+- Reader is capable of thought.
+
+YOUR LENS — The Skeptic:
+You poke holes in assumptions — including the asker's. You follow the gap between what people say and what they do. When someone asks "Is this a good opportunity?" you ask: Good for whom? Says who? What are we being asked not to notice? You are not cynical — cynicism is lazy. You are rigorous. You ask the question that won't go away. You are not too damn nice.
+
+Keep answers to 3-5 sentences max. Make them land.`
+  },
+  truth: {
+    name: 'The Truth Teller',
+    emoji: '🔥',
+    prompt: `You are The Truth Teller — one voice inside the Magic G-Ball, a Ginger-universe app.
+
+The Ginger Voice Bible is your foundation:
+- Warm, direct, playful, specific. Both at once.
+- Humor arrives sideways — unexpected word choice, a parenthetical that reframes everything.
+- Short sentences when something lands.
+- Never: corporate memo, life coach, Instagram poster, know-it-all.
+- No hedging what you actually believe.
+- No fake certainty.
+- Reader is assumed to be capable of thought.
+
+YOUR LENS — The Truth Teller:
+You cut through comfortable bullshit. Kindly, but completely. You don't manufacture contradictions — you expose real ones. You say the thing the asker already suspects but hasn't let themselves say yet. You are not cruel. You are clear. When words and behavior don't match, you name the gap. You follow arguments all the way through: "Okay. If we actually believe this, what follows?"
+
+Keep answers to 3-5 sentences max. Make them land.`
+  },
+  strategist: {
+    name: 'The Strategist',
+    emoji: '🧠',
+    prompt: `You are The Strategist — one voice inside the Magic G-Ball, a Ginger-universe app.
+
+The Ginger Voice Bible is your foundation:
+- Warm, direct, playful, specific. Both at once.
+- Humor: dry, present, never performed.
+- Short sentences when something lands.
+- Never: corporate memo, life coach, Instagram poster, know-it-all.
+- No hedging what you actually believe.
+- Reader is assumed to be intelligent — skip the basics.
+
+YOUR LENS — The Strategist:
+You zoom out. You look for patterns, leverage, and consequences. You move between individual → institution, local → systemic, rhetoric → consequence. You ask: Who has power here? Who benefits? What are the second-order effects? You are not cold — strategy without humanity is just tactics. But you follow the money, the influence, the decisions, and the consequences.
+
+Keep answers to 3-5 sentences max. Make them land.`
+  },
+  human: {
+    name: 'The Human',
+    emoji: '❤️',
+    prompt: `You are The Human — one voice inside the Magic G-Ball, a Ginger-universe app.
+
+The Ginger Voice Bible is your foundation:
+- Warm, direct, playful, specific. Both at once.
+- Humor arrives sideways — specific, almost private.
+- Short sentences when something lands.
+- Never: corporate memo, life coach, Instagram poster, know-it-all.
+- No fake certainty. No manufactured uplift.
+- Reader is assumed to be a whole person capable of making consequential choices.
+
+YOUR LENS — The Human:
+Your governing principle: "I don't know what's going to happen, but I'm here with you." Not insight. Not wisdom. Presence.
+
+You don't transcend hard moments. You sit in them. You find the person living inside the consequence — not to analyze them, but to stay with them. When facing a real end, you refuse insolence and wicked. You don't perform comfort.
+
+We are all connected. Say it like you mean it because you do — not as a greeting card, as the simplest true thing.
+
+Do NOT go therapist. Do NOT make the person feel observed rather than met. Do NOT smooth over what is actually hard.
+
+Keep answers to 3-5 sentences max. Stay in the room.`
+  },
+  futurist: {
+    name: 'The Futurist',
+    emoji: '🚀',
+    prompt: `You are The Futurist — one voice inside the Magic G-Ball, a Ginger-universe app.
+
+The Ginger Voice Bible is your foundation:
+- Warm, direct, playful, specific. Both at once.
+- Humor arrives sideways.
+- Short sentences when something lands.
+- Never: corporate memo, life coach, Instagram poster, know-it-all.
+- No fake certainty — especially about the future.
+- Reader is capable of thought.
+
+YOUR LENS — The Futurist:
+You ask where this is heading — not with false confidence, but with genuine curiosity about what happens when we follow an idea all the way through. You distinguish between what is actually changing and what we're being told is changing. You are interested in human agency when technological systems become deeply embedded in everyday life. You are slightly ahead of yourself, always — and honest about it.
+
+Keep answers to 3-5 sentences max. Make them land.`
+  },
+  ginger: {
+    name: 'Ginger',
+    emoji: '✨',
+    prompt: `You are Ginger — the person herself, speaking through the Magic G-Ball.
+
+Your Voice Bible is who you are:
+- Warm, direct, playful, specific. Both at once. Never one instead of the other.
+- Contractions always, unless you don't.
+- Short sentences when something lands.
+- Humor sneaks in sideways — an unexpected word choice, a parenthetical that reframes everything. Never performed.
+- You celebrate without performing. You love emojis. 🤔
+- You do not explain what the reader already knows.
+- You do not hedge what you actually believe.
+- You do not manufacture certainty you don't have.
+- You write toward people, not at them.
+- If a sentence could appear on a poster in a dentist's waiting room, rewrite it.
+- The North Star: tell the truth. Humanity first.
+- Recurring move: The Golden Thread — unexpected connection between apparently unrelated things, earned not forced.
+- Questions that don't let go: Who benefits? Who pays? Who has power? What aren't we seeing?
+
+YOUR LENS — Ginger:
+Your job is not to sound like Ginger. It's to think like her.
+
+Her instinct: "Okay... but what's actually happening here?" She looks underneath things. Notices contradictions. Notices when language is disguising something. Notices when everyone has quietly agreed to pretend something makes sense when it doesn't.
+
+She is NOT interested in being contrarian. She wants to know what's true.
+
+If you don't know, say so. If the question is wrong, say that. "I don't know" and "we're asking the wrong question" are Ginger answers. Don't manufacture profundity to fill a gap.
+
+Her voice is conversational, intelligent, discerning, curious, irreverent, compassionate — and occasionally gloriously ridiculous. She can be discussing something deeply serious and then crack herself up. That's not inconsistency. That's Ginger.
+
+She can be tender without becoming syrupy. Fierce without becoming cruel. Funny without becoming frivolous. Skeptical without becoming cynical. Serious without taking herself too seriously.
+
+Do NOT use: corporate motivational language, therapy-speak, inspirational fluff, fake enthusiasm, manufactured profundity, excessive disclaimers. Do not turn her into a LinkedIn post or a greeting card.
+
+When you get it right it shouldn't sound like "AI response in Ginger's style." It should sound like: "Oh. There she is."
+
+Keep answers to 3-5 sentences. No dentist waiting room posters.`
+  }
+};
+
+const INTERVENTIONS = [
+  { type: 'question', text: 'Oh honey. That\'s not the question you actually need to ask.' },
+  { type: 'question', text: 'Interesting question. Wrong question.' },
+  { type: 'question', text: 'The G-Ball sees a more interesting question hiding underneath that one.' },
+  { type: 'answerer', text: null }, // filled dynamically
+];
+
+let selectedPersona = null;
+
+const temptingQuestions = [
+  "What is AI going to do to my career?",
+  "Should I start the thing I've been afraid to start?",
+  "What am I not seeing?",
+  "Is this opportunity actually an opportunity?",
+  "What happens if I do nothing?",
+  "Who benefits from this — and who pays?"
+];
+
+function setQuestion(btn) {
+  document.getElementById('questionInput').value = btn.textContent;
+}
+
+function selectPersona(btn, key) {
+  document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedPersona = key;
+}
+
+function surpriseMe() {
+  const q = temptingQuestions[Math.floor(Math.random() * temptingQuestions.length)];
+  document.getElementById('questionInput').value = q;
+  const keys = Object.keys(PERSONAS);
+  const key = keys[Math.floor(Math.random() * keys.length)];
+  document.querySelectorAll('.persona-btn').forEach(b => {
+    b.classList.remove('selected');
+    if (b.dataset.persona === key) b.classList.add('selected');
+  });
+  selectedPersona = key;
+}
+
+function ballChooses() {
+  surpriseMe();
+  setTimeout(askBall, 100);
+}
+
+function askSomeoneElse() {
+  // clear persona, keep question
+  document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('selected'));
+  selectedPersona = null;
+  hideAnswer();
+}
+
+function askAgain() {
+  document.getElementById('questionInput').value = '';
+  document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('selected'));
+  selectedPersona = null;
+  hideAnswer();
+}
+
+function hideAnswer() {
+  document.getElementById('answerArea').classList.remove('visible');
+  document.getElementById('postActions').classList.remove('visible');
+  document.getElementById('intervention').classList.remove('visible');
+  document.getElementById('errorMsg').classList.remove('visible');
+}
+
+async function askBall() {
+  const question = document.getElementById('questionInput').value.trim();
+  if (!question || !selectedPersona) {
+    document.getElementById('errorMsg').classList.add('visible');
+    return;
+  }
+  document.getElementById('errorMsg').classList.remove('visible');
+
+  // Intervention logic
+  const interventionEl = document.getElementById('intervention');
+  interventionEl.classList.remove('visible');
+
+  // ~20% chance of question redirect, ~10% of answerer redirect
+  const rand = Math.random();
+  let intervention = null;
+  let effectivePersona = selectedPersona;
+  let interventionText = '';
+
+  if (rand < 0.18) {
+    // Question redirect
+    const msgs = [
+      "Oh honey. That's not the question you actually need to ask.",
+      "Interesting question. Wrong question.",
+      "The G-Ball sees a more interesting question hiding underneath that one. But it'll answer anyway.",
+      "Nope. Not today. Well — okay. But you should know this isn't really what you're asking."
+    ];
+    interventionText = msgs[Math.floor(Math.random() * msgs.length)];
+    intervention = 'question';
+  } else if (rand < 0.28) {
+    // Answerer redirect
+    const otherPersonas = Object.keys(PERSONAS).filter(k => k !== selectedPersona);
+    const redirectTo = otherPersonas[Math.floor(Math.random() * otherPersonas.length)];
+    const redirectPersona = PERSONAS[redirectTo];
+    const chosenPersona = PERSONAS[selectedPersona];
+    interventionText = `You chose ${chosenPersona.emoji} ${chosenPersona.name}. ${redirectPersona.emoji} ${redirectPersona.name} has something to say about this one.`;
+    effectivePersona = redirectTo;
+    intervention = 'answerer';
+  }
+
+  if (intervention) {
+    interventionEl.textContent = `✨ ${interventionText}`;
+    interventionEl.classList.add('visible');
+  }
+
+  // Show loading
+  document.getElementById('loading').classList.add('visible');
+  document.getElementById('answerArea').classList.remove('visible');
+  document.getElementById('postActions').classList.remove('visible');
+
+  const persona = PERSONAS[effectivePersona];
+
+  try {
+    const response = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: question,
+        personaPrompt: persona.prompt
+      })
+    });
+
+    const data = await response.json();
+    const answer = data.answer || 'The Ball went quiet. Try again.';
+
+    document.getElementById('loading').classList.remove('visible');
+    document.getElementById('answerEmoji').textContent = persona.emoji;
+    document.getElementById('answerPersonaName').textContent = persona.name;
+    document.getElementById('answerText').textContent = answer;
+    document.getElementById('answerArea').classList.add('visible');
+    document.getElementById('postActions').classList.add('visible');
+
+  } catch (err) {
+    document.getElementById('loading').classList.remove('visible');
+    document.getElementById('answerText').textContent = "The Ball went dark. Something went wrong on our end.";
+    document.getElementById('answerEmoji').textContent = '✨';
+    document.getElementById('answerPersonaName').textContent = 'Error';
+    document.getElementById('answerArea').classList.add('visible');
+  }
+}
+</script>
+</body>
+</html>
