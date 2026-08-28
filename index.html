@@ -343,6 +343,19 @@
     margin-top: 0.5rem;
   }
   .error-msg.visible { display: block; }
+  .mic-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.15s;
+  margin-top: 0.5rem;
+}
+.mic-btn:hover { border-color: var(--accent); color: var(--text); }
+.mic-btn.recording { border-color: #f77; color: #f77; animation: pulse 1s infinite; }
 </style>
 </head>
 <body>
@@ -357,6 +370,7 @@
   <div class="question-area">
     <div class="section-label">What are you asking?</div>
     <textarea id="questionInput" placeholder="Ask your own question, or pick one below…" rows="3"></textarea>
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Speak your question">🎤 Speak</button>
     <div class="tempting-questions">
       <button class="tq-btn" onclick="setQuestion(this)">What is AI going to do to my career?</button>
       <button class="tq-btn" onclick="setQuestion(this)">Should I start the thing I've been afraid to start?</button>
@@ -737,6 +751,26 @@ async function askBall() {
     document.getElementById('answerPersonaName').textContent = 'Error';
     document.getElementById('answerArea').classList.add('visible');
   }
+}
+  let recognition;
+function toggleMic() {
+  const btn = document.getElementById('micBtn');
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('Speech recognition not supported in this browser. Try Chrome.');
+    return;
+  }
+  if (recognition && btn.classList.contains('recording')) {
+    recognition.stop();
+    return;
+  }
+  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+  recognition.onstart = () => { btn.classList.add('recording'); btn.textContent = '🔴 Listening...'; };
+  recognition.onresult = (e) => { document.getElementById('questionInput').value = e.results[0][0].transcript; };
+  recognition.onend = () => { btn.classList.remove('recording'); btn.textContent = '🎤 Speak'; };
+  recognition.start();
 }
 </script>
 </body>
